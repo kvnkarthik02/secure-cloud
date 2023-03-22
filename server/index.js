@@ -13,7 +13,12 @@ app.get('/', (req, res) => {
 });
 
 
-app.get()
+app.post('/publickey', (req, res) => {
+});
+
+app.post("/download", (req, res) => {
+    
+});
 
 
 app.listen(1234, () => {
