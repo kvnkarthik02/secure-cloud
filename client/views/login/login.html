@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <h1>Welcome to Secure Cloud Service</h1>
+    <div class="login">
+        <h2>Login</h2>
+        <h3>Only users with access can login</h3>
+        <input type="text" name="u" placeholder="Username" id="username" required="required" />
+        <button onclick="validate_username()" type="submit"  class="btn btn-primary btn-block btn-large">Let me in.</button>
+      </div>
+</body>
+<script>
+  async function validate_username() {
+    var username = document.getElementById("username").value;
+    const response = await fetch('/validate', {
+      method: 'GET',
+      headers: {
+        "username": username
+      }
+    });
+
+    if(response.status == 200) {
+      window.location.href = "/client";
+    } else {
+      alert("Invalid username");
+    }
+  }
+
+</script>
+</html>

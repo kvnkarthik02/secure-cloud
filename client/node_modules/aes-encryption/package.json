@@ -1,0 +1,39 @@
+{
+  "name": "aes-encryption",
+  "version": "1.0.4",
+  "description": "AES-256 encryption utils and handlers",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "aes",
+    "encryption",
+    "decryption",
+    "encrypt",
+    "decrypt",
+    "secretkey"
+  ],
+  "author": "Oak [CODEMONDAY] <devcenter@codemonday.com>",
+  "contributors": [
+    "CODEMONDAY's Developers Team <devcenter@codemonday.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "prettier": "^2.3.2"
+  }
+}
