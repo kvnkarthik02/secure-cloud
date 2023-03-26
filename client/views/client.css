@@ -27,3 +27,9 @@ body{
 .footer a {
   color: white;
 }
+
+#removeButton{
+  left      : 50%;
+  position  : absolute;
+  transform : translate(-50%, 20%);
+}

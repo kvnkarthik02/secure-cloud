@@ -89,6 +89,7 @@ app.post('/upload', (req, res) => {
                 res.statusCode = 400;
             }
         }).catch(function (error) {
+            console.log("hello")
             console.log(error);
         });
       })  
