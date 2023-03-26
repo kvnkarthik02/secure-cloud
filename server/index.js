@@ -6,6 +6,7 @@ const AesEncryption = require('aes-encryption');
 const aes = new AesEncryption();
 const fs = require('fs');
 const path = require('path');
+const list = require('list-contents');
 
 app.use(cors())
 app.use(express.static(path.join(__dirname, 'views')))
@@ -60,6 +61,13 @@ app.get('/publickey', (req, res) => {
     let rsapublicServer = fs.readFileSync(path.resolve(__dirname, './access/rsapublicServer.pem'), 'utf8');
     return res.send(rsapublicServer); 
 }) 
+
+app.get('/fileList', (req, res) => {
+  list("./uploadedFiles",(o)=>{
+    if(o.error) throw o.error;
+    res.send(o.files);
+  });
+})
 
 
 app.listen(1234, () => {

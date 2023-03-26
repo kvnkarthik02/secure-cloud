@@ -17,6 +17,7 @@
     "formidable": "^2.1.1",
     "fs": "^0.0.1-security",
     "html": "^1.0.0",
+    "list-contents": "^4.0.3",
     "nodemon": "^2.0.21"
   }
 }

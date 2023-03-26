@@ -1,0 +1,28 @@
+.navbar-brand {
+    color: white;
+  }
+  
+  body{
+    background-color: bisque;
+  }
+
+  #list-group { 
+    left      : 50%;
+    top       : 40%;
+    position  : absolute;
+    transform : translate(-50%, -50%);
+  }
+
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: red;
+    color: white;
+    text-align: center;
+  }
+  
+  .footer a {
+    color: white;
+  }
