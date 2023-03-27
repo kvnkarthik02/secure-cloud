@@ -16,6 +16,7 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname + '/views/login')))
 app.use(express.static(path.join(__dirname + '/views')))
+app.use(express.json());
 
 //default route
 app.get('/', (req, res) => {
@@ -138,6 +139,11 @@ app.post('/upload', (req, res) => {
 
 // });
 
+app.post('/remove', async (req, res) => {
+    let response = await axios.get('http://localhost:1234/publickey', {});
+    let serverPublicKey = response.data;
+    console.log(req.body.file);
+})
 
 app.listen(4321, () => {
     console.log('Client listening on port 4321!');

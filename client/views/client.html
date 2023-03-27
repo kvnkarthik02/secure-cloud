@@ -39,10 +39,19 @@
         <span>
             <a><strong>Remove:</strong></a>
             <form> 
-                <ul class="list-group" id="list-group"></ul>
-                <input class="btn btn-primary" id= "removeButton" type="submit" onclick="removeFile()">
+                <ul class="list-group" id="list-groupID"></ul>
+                <input onclick="remove()" class="btn btn-primary" id= "removeButton" type="submit" onclick="removeFile()">
             </form>
-        </span>    
+        </span>      
+
+        <!-- <ul class = "list-group" id="list-groupID">
+            <li class="list-group-item">
+                <label for="firstRadio" class="form-check-label">
+                    <input type="radio" class="form-check-input me-1" name="listGroupRadio">
+                    First radio
+                </label>
+            </li>
+        </ul> -->
     </div>
 
     <div class="footer">
@@ -51,6 +60,8 @@
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 <script>
     function init(){
         fetch('http://localhost:1234/fileList', {
@@ -61,8 +72,16 @@
             for( let i=0;i<data.length;i++ ) {
                 var classCount = "element"+i;
                 var selectClassCount = "#"+classCount;
-                d3.select("#list-group").append("li").classed('list-group-item', true).attr("id", "list-group-item").attr("id", classCount).append("input").classed('form-check-input me-1', true).attr("type", "radio")
+                d3.select("#list-groupID").append("li").classed('list-group-item', true).attr("id", "list-group-item").attr("id", classCount).append("input").classed('form-check-input me-1', true).attr("type", "radio").attr("name", "listGroupRadio")
                 d3.select(selectClassCount).append("label").classed('list-group-label', true).text(data[i])
+
+                // d3.select("#list-groupID").append("li").classed('list-group-item',true).append("label").text(data[i]).append("input").classed('form-check-input me-1', true).attr("type", "radio").attr("name", "listGroupRadio");
+                // d3.select("#list-groupID").append("li").classed('list-group-item',true).append("label").classed("label-class",true).append("input").classed('form-check-input me-1', true).attr("type", "radio").attr("name", "listGroupRadio");
+
+                
+                // d3.select("#list-groupID").append("li").classed('list-group-item',true).append("label").classed("label-class",true);
+                // d3.select("#label-class").text(data[i]);
+                // d3.select("#label-class").insert("input").classed('form-check-input me-1', true).attr("type", "radio").attr("name", "listGroupRadio");               
             }
         })
     }
@@ -89,6 +108,29 @@
     }
 
     //function that handles the removal of a file from the server
+    function remove(){
+
+        $("input[type='radio']:checked").each(function() {
+            var removeFile= $(this).next().text();
+            // alert(removeFile);
+            fetch('/remove', {
+                method: 'POST',
+                body: JSON.stringify({
+                    "file": removeFile
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+        });
+    }
 
 </script>
 </html>
