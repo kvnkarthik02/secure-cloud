@@ -29,8 +29,8 @@
         <span>
             <a><strong>Download:</strong></a>
             <form> 
-                <input type="file" id="myFile" name="filename">
-                <input class="btn btn-primary" type="submit">
+                <input type="text" id="myFile" name="filename">
+                <input class="btn btn-primary" onclick="download()" type="submit">
             </form>
         </span>
 
@@ -40,18 +40,9 @@
             <a><strong>Remove:</strong></a>
             <form> 
                 <ul class="list-group" id="list-groupID"></ul>
-                <input onclick="remove()" class="btn btn-primary" id= "removeButton" type="submit" onclick="removeFile()">
+                <input onclick="remove()" class="btn btn-primary" id= "removeButton" type="submit">
             </form>
         </span>      
-
-        <!-- <ul class = "list-group" id="list-groupID">
-            <li class="list-group-item">
-                <label for="firstRadio" class="form-check-label">
-                    <input type="radio" class="form-check-input me-1" name="listGroupRadio">
-                    First radio
-                </label>
-            </li>
-        </ul> -->
     </div>
 
     <div class="footer">
@@ -74,14 +65,6 @@
                 var selectClassCount = "#"+classCount;
                 d3.select("#list-groupID").append("li").classed('list-group-item', true).attr("id", "list-group-item").attr("id", classCount).append("input").classed('form-check-input me-1', true).attr("type", "radio").attr("name", "listGroupRadio")
                 d3.select(selectClassCount).append("label").classed('list-group-label', true).text(data[i])
-
-                // d3.select("#list-groupID").append("li").classed('list-group-item',true).append("label").text(data[i]).append("input").classed('form-check-input me-1', true).attr("type", "radio").attr("name", "listGroupRadio");
-                // d3.select("#list-groupID").append("li").classed('list-group-item',true).append("label").classed("label-class",true).append("input").classed('form-check-input me-1', true).attr("type", "radio").attr("name", "listGroupRadio");
-
-                
-                // d3.select("#list-groupID").append("li").classed('list-group-item',true).append("label").classed("label-class",true);
-                // d3.select("#label-class").text(data[i]);
-                // d3.select("#label-class").insert("input").classed('form-check-input me-1', true).attr("type", "radio").attr("name", "listGroupRadio");               
             }
         })
     }
@@ -105,6 +88,14 @@
         .catch(error => {
             console.error(error)
         })
+    }
+
+    //function that handles the download request of a file in the server
+    function download(){
+        
+        console.log("document")
+        // var downloadFile = document.getElementById("myFile").value;
+        // alert('Downloading file: ' + downloadFile);
     }
 
     //function that handles the removal of a file from the server

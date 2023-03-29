@@ -13,6 +13,11 @@ body{
   transform : translate(-50%, -50%);
 }
 
+.downloadButton{
+
+  padding-left: 15%;
+
+}
 
 .footer {
   position: fixed;
