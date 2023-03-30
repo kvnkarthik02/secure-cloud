@@ -29,8 +29,8 @@
         <span>
             <a><strong>Download:</strong></a>
             <form> 
-                <input type="text" id="myFile" name="filename">
-                <input class="btn btn-primary" onclick="download()" type="submit">
+                <input type="text" id="downloadFile" name="filename">
+                <input onclick="download()" class="btn btn-primary" type="submit">
             </form>
         </span>
 
@@ -92,10 +92,24 @@
 
     //function that handles the download request of a file in the server
     function download(){
-        
-        console.log("document")
-        // var downloadFile = document.getElementById("myFile").value;
-        // alert('Downloading file: ' + downloadFile);
+        var downloadFile = document.getElementById("downloadFile").value;
+
+        fetch('http://localhost:1234/download', {
+            method: 'POST',
+            body: JSON.stringify({
+                "fileName": downloadFile
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+        })
+        .catch(error => {
+            console.error(error)
+        })
     }
 
     //function that handles the removal of a file from the server

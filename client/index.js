@@ -91,10 +91,41 @@ app.post('/upload', (req, res) => {
             }
         }).catch(function (error) {
             console.log("hello")
-            console.log(error);
+            console.log(error); 
         });
       })  
 });    
+
+app.post('/download', async (req, res) => {
+    let downloadFile = req.body.fileName;
+
+    let response = await axios.get('http://localhost:1234/publickey', {});
+    let serverPublicKey = response.data;
+
+    encryptedFileName = crypto.publicEncrypt({
+        key: serverPublicKey,
+        padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+        oaepHash: "sha256",
+    },
+        Buffer.from(downloadFile)
+    );
+    
+    let buff = Buffer.from(encryptedFileName);
+    let base64FileName = buff.toString('base64');
+
+    axios.post('http://localhost:1234/download', {
+            "fileName": base64FileName,
+        }).then(function (response) {  
+            console.log(response.data);
+            if(response.statusCode === 200){
+                res.statusCode = 200;
+            }else{
+                res.statusCode = 400;
+            }
+        }).catch(function (error) {
+            console.log(error);
+    });
+});
 
 
 
@@ -126,9 +157,14 @@ app.post('/remove', async (req, res) => {
             }
         }).catch(function (error) {
             console.log(error);
-        });
+    });
 })
 
+//return client's public key
+app.get('/publickey', (req, res) => {
+    let rsapublicClient= fs.readFileSync(path.resolve(__dirname, './access/rsapublic.pem'), 'utf8');
+    return res.send(rsapublicClient); 
+}) 
 
 app.listen(4321, () => {
     console.log('Client listening on port 4321!');

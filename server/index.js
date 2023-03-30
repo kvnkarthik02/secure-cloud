@@ -3,6 +3,7 @@ const cors = require('cors');
 const app = express();
 const crypto = require('crypto');
 const AesEncryption = require('aes-encryption');
+const axios = require('axios');
 const aes = new AesEncryption();
 const fs = require('fs');
 const path = require('path');
@@ -56,7 +57,29 @@ app.post('/upload', (req, res) => {
 });
 
 
-app.get('/upload', (req, res) => {
+app.post('/download', async(req, res) => {
+  console.log('Downloading file');
+
+  let downloadFile = req.body.fileName;
+
+  let response = await axios.get('http://localhost:1234/publickey', {});
+  let clientPublicKey = response.data;
+
+  if(!downloadFile){
+    return res.status(400).send('File name is required.');
+  }else{
+    try{
+      let requestedFile = fs.readFileSync(__dirname + '/uploadedFiles/' + downloadFile, 'utf8');
+    }catch(e){
+
+    }
+  }
+  
+
+  
+
+
+
 
 });
 
@@ -64,19 +87,12 @@ app.get('/upload', (req, res) => {
 app.post('/remove', (req, res) => {
   let removeFile = req.body.fileName;
   removeFile = removeFile.toString('ascii');
-  // let buffer = Buffer.from(removeFile);
-  // let newRemoveFile = buffer.toString('ascii');
-  // console.log('Decrypted file: ', newRemoveFile);
-  
  
   let rsaPrivKeyServer = fs.readFileSync(path.resolve(__dirname, './access/rsaprivateServer.pem'), 'utf8');
 
   const decryptedData = crypto.privateDecrypt(
     {
       key: rsaPrivKeyServer,
-      // In order to decrypt the data, we need to specify the
-      // same hashing function and padding scheme that we used to
-      // encrypt the data in the previous step
       padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
       oaepHash: "sha256",
     },
@@ -94,7 +110,6 @@ app.post('/remove', (req, res) => {
 
 
 });
-
 
 //return server's public key
 app.get('/publickey', (req, res) => {
