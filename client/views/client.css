@@ -4,6 +4,13 @@
 
 body{
   background-color: bisque;
+  padding-top: 10px;
+}
+
+.welcomeMessage{
+  color: black;
+  text-align: center;
+  margin-top: 50px;
 }
 
 #form { 
@@ -11,6 +18,7 @@ body{
   top       : 40%;
   position  : absolute;
   transform : translate(-50%, -50%);
+  padding-top: 100px;
 }
 
 .downloadButton{

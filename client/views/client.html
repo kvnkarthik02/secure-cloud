@@ -11,11 +11,16 @@
     <title>Document</title>
 </head>
 <body onload="init()">
-    <nav class="navbar bg-dark ">
+    <nav class="navbar bg-dark fixed-top ">
         <div class="container-fluid" style="justify-content: center;">
           <span class="navbar-brand mb-0 h1" >Secure Cloud Client</span>
         </div>
     </nav>
+    <div class="welcomeMessage">
+        <h2>Welcome!</h2>
+        <p>Share your <strong>text (.txt)</strong> files and your <strong>code</strong> files with your teammates!</p>
+    </div>
+    
     <div id="form">
         <span class="upload">
             <a><strong>Upload:</strong></a>
@@ -32,6 +37,7 @@
                 <input type="text" id="downloadFile" name="filename">
                 <input onclick="download()" class="btn btn-primary" type="submit">
             </form>
+            <a id="linkDownload" download> <p>Download requested file</p> </a>
         </span>
 
         </br>
@@ -94,22 +100,26 @@
     function download(){
         var downloadFile = document.getElementById("downloadFile").value;
 
-        fetch('http://localhost:1234/download', {
+        const formData = new FormData();
+        formData.append('fileName', downloadFile);
+
+        fetch('/download', {
             method: 'POST',
             body: JSON.stringify({
-                "fileName": downloadFile
+                "file": downloadFile
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8'
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
+        .then(response => {
+            var downloadString = "/downloads/" + user_input
+            d3.select("#download_link").attr("href", downloadString).attr("download", user_input)
         })
         .catch(error => {
             console.error(error)
-        })
+        })  
+          
     }
 
     //function that handles the removal of a file from the server

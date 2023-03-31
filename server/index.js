@@ -41,7 +41,7 @@ app.post('/upload', (req, res) => {
   aes.setSecretKey(decryptedAesKey.toString('ascii'));
   let ciphertext = req.body.ct;
   ciphertext = aes.decrypt(ciphertext);
-
+ 
   let aeskeyServer = fs.readFileSync(path.resolve(__dirname, './access/aeskeyServer.pem'), 'utf8');
   aes.setSecretKey(aeskeyServer);
   ciphertextForServerStorage = aes.encrypt(ciphertext);  //bad variable name
@@ -55,32 +55,44 @@ app.post('/upload', (req, res) => {
     return res.status(200).send('File is uploaded successfully.');
   });    
 });
-
+ 
 
 app.post('/download', async(req, res) => {
-  console.log('Downloading file');
 
   let downloadFile = req.body.fileName;
 
-  let response = await axios.get('http://localhost:1234/publickey', {});
-  let clientPublicKey = response.data;
+  let buff = Buffer.from(downloadFile);
+  downloadFile = buff.toString('ascii');
 
-  if(!downloadFile){
-    return res.status(400).send('File name is required.');
-  }else{
-    try{
-      let requestedFile = fs.readFileSync(__dirname + '/uploadedFiles/' + downloadFile, 'utf8');
-    }catch(e){
+  let rsaPrivKeyServer = fs.readFileSync(path.resolve(__dirname, './access/rsaprivateServer.pem'), 'utf8');
 
-    }
+  let decryptedFileName = crypto.privateDecrypt(
+  {
+      key: rsaPrivKeyServer,
+      // In order to decrypt the data, we need to specify the
+      // same hashing function and padding scheme that we used to
+      // encrypt the data in the previous step
+      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+      oaepHash: "sha256",
+    },
+    Buffer.from(downloadFile, "base64")
+  );
+
+  decryptedFileName = decryptedFileName.toString('ascii');
+
+  if(fs.existsSync(__dirname + '/uploadedFiles/' + decryptedFileName)){
+    
+    let fileContents = fs.readFileSync(path.resolve(__dirname, './uploadedFiles/' + decryptedFileName), 'utf8');
+    let aeskeyServer = fs.readFileSync(path.resolve(__dirname, './access/aeskeyServer.pem'), 'utf8');
+
+    console.log('File should be downloaded successfully.');
+
+    return res.status(200).send({
+      fileName: decryptedFileName, 
+      fileContents: fileContents,
+      aesKey: aeskeyServer
+    });
   }
-  
-
-  
-
-
-
-
 });
 
 
@@ -107,7 +119,7 @@ app.post('/remove', (req, res) => {
     console.log('File is removed successfully.');
     return res.status(200).send('File is removed successfully.');
   })
-
+      
 
 });
 
