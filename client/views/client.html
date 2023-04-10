@@ -37,7 +37,6 @@
                 <input type="text" id="downloadFile" name="filename">
                 <input onclick="download()" class="btn btn-primary" type="submit">
             </form>
-            <a id="linkDownload" download> <p>Download requested file</p> </a>
         </span>
 
         </br>
@@ -112,14 +111,9 @@
                 'Content-type': 'application/json; charset=UTF-8'
             },
         })
-        .then(response => {
-            var downloadString = "/downloads/" + user_input
-            d3.select("#download_link").attr("href", downloadString).attr("download", user_input)
-        })
-        .catch(error => {
-            console.error(error)
-        })  
-          
+        .then( 
+            alert("Your file has been saved to the following location: " + "C:/Users/kvnka/OneDrive/Documents/Github Repos/secure-cloud-service/client/downloadFiles" )
+        ) 
     }
 
     //function that handles the removal of a file from the server

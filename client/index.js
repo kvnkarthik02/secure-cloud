@@ -91,7 +91,6 @@ app.post('/upload', (req, res) => {
                 res.statusCode = 400;
             }
         }).catch(function (error) {
-            console.log("hello")
             console.log(error); 
         });
       })  
@@ -131,8 +130,7 @@ app.post('/download', async (req, res) => {
         };
         console.log('File is downloaded to client successfully.');
         return res.status(200).send('File is downloaded to client successfully.');
-    });
- 
+    });  
 });  
  
 app.post('/remove', async (req, res) => {
