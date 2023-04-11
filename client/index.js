@@ -14,6 +14,8 @@ const axios = require('axios');
 const app = express();
 app.use(cors());
 
+let validUsers = ["kvenkate", "admin", "karthik"]
+
 app.use(express.static(path.join(__dirname + '/views/login')))
 app.use(express.static(path.join(__dirname + '/views')))
 app.use(express.json());
@@ -31,26 +33,45 @@ app.get('/client', (req, res) => {
 //route which validates username
 app.get('/validate', (req, res) => {
     try{
-        let username =  req.headers.username;
+        let username =  req.headers.username +"\r";
         console.log(username);
-        fs.readFile("./validUsernames.json", "utf8", (err, jsonString) => {
-            if (err) {
-              console.log("File read failed:", err);
-              return;
-            }
-            console.log("File data:", jsonString);
-            if(jsonString.includes(username)){
+        var array = fs.readFileSync('./validUsernames.txt').toString().split("\n");
+        console.log(array);
+        for(i in array) {
+            console.log(array[i]);
+            if(array[i] === username) {
                 console.log("Valid usernames");
                 return res.status(200).send("Valid");
-            }else{
-                console.log("Invalid usernames");
-                return res.status(404).send("Invalid");
             }
-          });
+        }
+        console.log("Invalid usernames");
+        return res.status(404).send("Invalid");
+        // if(array.includes(username)){
+        //     console.log("Valid usernames");
+        //     return res.status(200).send("Valid");
+        // }else{
+        //     console.log("Invalid usernames");
+        //     return res.status(404).send("Invalid");
+        // }
     }catch(err){
         console.log(err);
     }
 });
+
+app.post('/register', (req, res) => {
+    try{
+        let username = req.body.username;
+        var stream = fs.createWriteStream("./validUsernames.txt", {'flags': 'a'});
+        stream.once('open', function(fd) {
+            stream.write(username+"\r\n");
+        });
+        console.log("New user has been registered.")
+        return res.status(200).send("Registered");
+    }catch(err){
+        console.log("Registration failed");
+        return res.status(404).send("Registration failed.")
+    }
+})
 
 
 //route which handles the client side of a file upload

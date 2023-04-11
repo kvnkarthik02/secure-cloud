@@ -15,6 +15,7 @@
         <h5>Only users with access can login</h5>
         <input type="text" name="u" placeholder="Username" id="username" required="required" />
         <button onclick="validate_username()" type="submit"  class="btn btn-primary btn-block btn-large">Let me in.</button>
+        <button onclick="register_username()" type="submit"  class="btn btn-primary btn-block btn-large">Register.</button>
     </div>
   
   <div class="footer">
@@ -37,6 +38,26 @@
       window.location.href = "/client";
     } else {
       alert("Invalid username");
+    }
+  }
+
+  async function register_username() {
+    var username = document.getElementById("username").value;
+    const response = await fetch('/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        "username": username
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+    });
+
+    if(response.status == 200) {
+      alert("User registered successfully")
+      window.location.href = "/";
+    } else {
+      alert("User already exists");
     }
   }
 
